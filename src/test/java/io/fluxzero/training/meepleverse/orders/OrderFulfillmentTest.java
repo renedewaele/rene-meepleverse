@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Map;
 
 class OrderFulfillmentTest {
-    final TestFixture fixture = TestFixture.create(CatalogHandler.class, OrderFulfillment.class)
+    final TestFixture fixture = TestFixture.create(CatalogHandler.class, OrderWorkflow.class)
             .givenCommands("/catalog/register-items.json");
 
     @Nested
@@ -51,10 +51,10 @@ class OrderFulfillmentTest {
         void shipTwoItems() {
             fixture.givenCommands("/orders/place-order-double.json")
                     .whenEvent("/supply/backorder-arrived-order2-item-gloomhaven.json")
-                    .expectEvents("/shipping/order2-shipped-gloomhaven.json")
+                    .expectNoEvents()
                     .andThen()
                     .whenEvent("/supply/backorder-arrived-order2-item-ark-nova.json")
-                    .expectEvents("/shipping/order2-shipped-ark-nova.json");
+                    .expectEvents("/shipping/order2-shipped.json");
         }
     }
 
