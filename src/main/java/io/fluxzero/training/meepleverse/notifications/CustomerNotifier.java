@@ -24,8 +24,7 @@ public class CustomerNotifier {
     @HandleEvent
     void handle(ShipmentSent event, Shipment shipment) {
         sendAndForgetCommand(new SendEmail(shipment.details().addressee().email(), "We've sent an item"));
-        log.info("Shipment {} sent for order {}, item {}", shipment.shipmentId(), shipment.details().orderId(),
-                 shipment.details().itemId());
+        log.info("Shipment {} sent for order {}", shipment.shipmentId(), shipment.details().orderId());
     }
 
     @HandleEvent
