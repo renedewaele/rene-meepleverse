@@ -3,6 +3,11 @@ Accept: application/json
 
 ###
 
+GET {{baseUrl}}/shipments
+Accept: application/json
+
+###
+
 POST {{baseUrl}}/orders
 Accept: application/json
 Content-Type: application/json
