@@ -4,11 +4,13 @@ import io.fluxzero.common.serialization.JsonUtils;
 import io.fluxzero.sdk.test.TestFixture;
 import io.fluxzero.sdk.tracking.handling.IllegalCommandException;
 import io.fluxzero.sdk.web.HandlePost;
+import io.fluxzero.training.meepleverse.Meepleverse;
 import io.fluxzero.training.meepleverse.catalog.CatalogHandler;
 import io.fluxzero.training.meepleverse.orders.api.AbortOrder;
 import io.fluxzero.training.meepleverse.payments.api.PaymentAccepted;
 import io.fluxzero.training.meepleverse.payments.api.PaymentRejected;
 import io.fluxzero.training.meepleverse.payments.api.ValidatePayment;
+import io.fluxzero.training.meepleverse.shipping.api.GetShipments;
 import io.fluxzero.training.meepleverse.shipping.api.SendShipment;
 import io.fluxzero.training.meepleverse.shipping.api.ShippingFailed;
 import io.fluxzero.training.meepleverse.supplier.BackorderFailed;
@@ -55,6 +57,22 @@ class OrderFulfillmentTest {
                     .andThen()
                     .whenEvent("/supply/backorder-arrived-order2-item-ark-nova.json")
                     .expectEvents("/shipping/order2-shipped.json");
+        }
+
+        @Test
+        void adminSeesFullShipments() {
+            fixture.givenCommands("/orders/place-order-single.json")
+                    .givenEvents("/supply/backordered-item-arrived-order1.json")
+                    .whenQuery(new GetShipments())
+                    .expectResult(r -> r.size() == 1 && r.getFirst().details().addressee() != null);
+        }
+
+        @Test
+        void otherUsersGetNoUserDetails() {
+            fixture.givenCommands("/orders/place-order-single.json")
+                    .givenEvents("/supply/backordered-item-arrived-order1.json")
+                    .whenQueryByUser("henk", new GetShipments())
+                    .expectResult(r -> r.size() == 1 && r.getFirst().details().addressee() == null);
         }
     }
 
