@@ -11,8 +11,8 @@
 	<groupId>io.fluxzero.training</groupId>
 	<artifactId>meepleverse</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Fluxzero Basic Java</name>
-	<description>A minimal Fluxzero setup for getting started.</description>
+	<name>Meepleverse</name>
+	<description>An e-commerce webapp for board games.</description>
 	<properties>
 		<java.version>24</java.version>
 	</properties>
@@ -22,7 +22,7 @@
 			<dependency>
 				<groupId>io.fluxzero</groupId>
 				<artifactId>fluxzero-bom</artifactId>
-				<version>1.13.0</version>
+				<version>1.20.0</version>
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>
@@ -76,7 +76,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>app</finalName>
+		<finalName>meepleverse</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
