@@ -23,7 +23,6 @@ services:
     environment:
       - FLUXZERO_BASE_URL=http://fluxzero-runtime:8888
       - FLUXZERO_APPLICATION_NAME=supplier-service
-      - meepleverse.url=
     depends_on:
       fluxzero-runtime:
         condition: service_healthy
