@@ -1,6 +1,8 @@
 package io.fluxzero.training.meepleverse.orders;
 
+import io.fluxzero.common.MessageType;
 import io.fluxzero.sdk.Fluxzero;
+import io.fluxzero.sdk.common.exception.TechnicalException;
 import io.fluxzero.sdk.tracking.Consumer;
 import io.fluxzero.sdk.tracking.handling.HandleError;
 import io.fluxzero.sdk.tracking.handling.Trigger;
@@ -13,8 +15,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class OrderErrorHandler {
 
-    @HandleError
-    void handle(Throwable error, @Trigger ValidatePayment command) {
+    @HandleError(allowedClasses = TechnicalException.class)
+    void handle(@Trigger(messageType = MessageType.COMMAND) ValidatePayment command) {
         log.info("Retrying payment validation for order {}", command.getReference());
         Fluxzero.sendAndForgetCommand(command);
     }
