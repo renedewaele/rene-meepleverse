@@ -4,7 +4,6 @@ import io.fluxzero.common.serialization.JsonUtils;
 import io.fluxzero.sdk.test.TestFixture;
 import io.fluxzero.sdk.tracking.handling.IllegalCommandException;
 import io.fluxzero.sdk.web.HandlePost;
-import io.fluxzero.training.meepleverse.Meepleverse;
 import io.fluxzero.training.meepleverse.catalog.CatalogHandler;
 import io.fluxzero.training.meepleverse.orders.api.AbortOrder;
 import io.fluxzero.training.meepleverse.payments.api.PaymentAccepted;
@@ -73,6 +72,14 @@ class OrderFulfillmentTest {
                     .givenEvents("/supply/backordered-item-arrived-order1.json")
                     .whenQueryByUser("henk", new GetShipments())
                     .expectResult(r -> r.size() == 1 && r.getFirst().details().addressee() == null);
+        }
+
+        @Test
+        void ownerGetsUserDetails() {
+            fixture.givenCommandsByUser("henk","/orders/place-order-single.json")
+                    .givenEvents("/supply/backordered-item-arrived-order1.json")
+                    .whenQueryByUser("henk", new GetShipments())
+                    .expectResult(r -> r.size() == 1 && r.getFirst().details().addressee() != null);
         }
     }
 

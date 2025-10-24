@@ -1,5 +1,6 @@
 package io.fluxzero.training.meepleverse.shipping.api.model;
 
+import io.fluxzero.sdk.Fluxzero;
 import io.fluxzero.sdk.common.serialization.FilterContent;
 import io.fluxzero.training.meepleverse.authentication.Sender;
 import io.fluxzero.training.meepleverse.catalog.api.model.ItemId;
@@ -16,8 +17,10 @@ public record ShipmentDetails(@NotEmpty List<ItemId> itemIds, @NotNull OrderId o
                               @NotNull @Valid @With Addressee addressee) {
 
     @FilterContent
-    ShipmentDetails filterContent(Sender sender) {
-        return sender.isAdmin() ? this : withAddressee(null);
+    ShipmentDetails filterContent(Sender sender, Shipment shipment) {
+        var order = Fluxzero.loadAggregate(orderId).get();
+        return sender.isAdmin()
+               || order.ownerId().equals(sender.userId()) ? this : withAddressee(null);
     }
 
 }
