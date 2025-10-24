@@ -1,6 +1,8 @@
 package io.fluxzero.training.meepleverse.orders;
 
 import io.fluxzero.sdk.Fluxzero;
+import io.fluxzero.sdk.modeling.EntityId;
+import io.fluxzero.sdk.tracking.Consumer;
 import io.fluxzero.sdk.tracking.handling.Association;
 import io.fluxzero.sdk.tracking.handling.HandleEvent;
 import io.fluxzero.sdk.tracking.handling.Stateful;
@@ -34,8 +36,10 @@ import static io.fluxzero.sdk.Fluxzero.sendAndForgetCommand;
 @Value
 @Builder(toBuilder = true)
 @Slf4j
+@Consumer(name = "OrderWorkflow", ignoreSegment = true)
 public class OrderWorkflow {
 
+    @EntityId
     @Association
     OrderId orderId;
     @Association
