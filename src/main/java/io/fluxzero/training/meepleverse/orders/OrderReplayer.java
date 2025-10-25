@@ -22,7 +22,7 @@ import static io.fluxzero.sdk.common.serialization.DeserializingMessage.computeF
 import static io.fluxzero.sdk.common.serialization.DeserializingMessage.whenBatchCompletes;
 
 @Component
-@Consumer(name = "OrderReplayer", minIndex = 0L, maxIndexExclusive = OrderReplayer.MAX_INDEX)
+@Consumer(name = "OrderReplayer", minIndex = 0L, maxIndexExclusive = OrderReplayer.MAX_INDEX, maxFetchSize = 10_000)
 public class OrderReplayer {
     static final long MAX_INDEX = 115427613081600000L; // 2025-10-24T06:00:00Z,
 
