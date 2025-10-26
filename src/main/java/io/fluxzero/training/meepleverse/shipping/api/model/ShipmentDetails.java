@@ -17,10 +17,9 @@ public record ShipmentDetails(@NotEmpty List<ItemId> itemIds, @NotNull OrderId o
                               @NotNull @Valid @With Addressee addressee) {
 
     @FilterContent
-    ShipmentDetails filterContent(Sender sender, Shipment shipment) {
+    ShipmentDetails filterContent(Sender sender) {
         var order = Fluxzero.loadAggregate(orderId).get();
-        return sender.isAdmin()
-               || order.ownerId().equals(sender.userId()) ? this : withAddressee(null);
+        return sender.isAdmin() || order.ownerId().equals(sender.userId()) ? this : withAddressee(null);
     }
 
 }
